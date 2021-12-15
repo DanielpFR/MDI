@@ -98,7 +98,7 @@ Remark : This information is also available from the [Microsoft Defender for Ide
 
 Except if your DCs are used as files server, which is of course not recommended at all you should not see many files copied from a workstation or member server to DCs.  
 
-Using this KQL query you can monitor this activity and identify potential suspect activities or even risky activity:  
+Using this KQL query you can monitor this activity and identify potential suspect activities or even risky activities:  
 
 *IdentityDirectoryEvents*  
 *| where ActionType == @"SMB file copy"*  
@@ -112,7 +112,7 @@ Remark: MDI has also an alert for data exfiltration (such as the NTDS.DIT file c
 
 ## Tips 4 – “Account Password Not Required” changed from FALSE to TRUE   
 
-Even with a password policy in place that affects all user accounts, it is possible to set a blank password for a user with the setting “Account Password Not Required” using for example a PowerShell cmdlet (not possible through the GUI). This is why is important to list all users with this setting enable using the MDI portal but also to track all changes from “Account Password Not Required” = FALSE to TRUE:  
+Even with a password policy in place that affects all user accounts, it is possible to set a blank password for a user with the setting “Account Password Not Required” using for example a PowerShell cmdlet (not possible through the GUI). This is why it's important to list all users with this setting enabled using the MDI portal but also to track all changes from “Account Password Not Required” = FALSE to TRUE:  
 
 *IdentityDirectoryEvents*  
 *| where ActionType == @"Account Password Not Required changed"*  
@@ -125,7 +125,7 @@ Even with a password policy in place that affects all user accounts, it is possi
 
 ## Tips 5 – “Account Password Never Expires” changed from FALSE to TRUE  
 
-This setting could be expected for service account if you can’t use gMSA; however, we should never see “Account Password Never Expires” changed from FALSE to TRUE for a user account (not SVC) or for an admin account (a lazy one 😊). Here how to track this information:  
+This setting could be expected for service account if you can’t use gMSA; however, we should never see “Account Password Never Expires” changed from FALSE to TRUE for an user account (not SVC) or for an admin account (a lazy one 😊). Here how to track this information:  
 
 *IdentityDirectoryEvents*  
 *| where ActionType == @"Account Password Never Expires changed"*  
