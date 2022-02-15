@@ -203,7 +203,8 @@ This query is available from  [https://github.com/Iveco/xknow_infosec/blob/main/
 *| where Timestamp > ago(7d)*   
 *| where LogonType == "LDAP cleartext" //and isnotempty(AccountName)*  
 *| project LogonTime = Timestamp, DeviceName, Application, ActionType, LogonType //,AccountName*  
-*| join kind=inner ( DeviceNetworkEvents*  
+*| join kind=inner ( 
+DeviceNetworkEvents*  
 *| where Timestamp > ago(7d) | where ActionType == "ConnectionSuccess"*  
 *| extend DeviceName = toupper(trim(@"\..*$",DeviceName))*  
 *| where RemotePort == "389"*  
