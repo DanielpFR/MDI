@@ -201,7 +201,7 @@ This query is available from  [https://github.com/Iveco/xknow_infosec/blob/main/
 
 *IdentityLogonEvents*  
 *| where Timestamp > ago(7d)*   
-*| where Protocol == "LDAP" //and isnotempty(AccountName)*  
+*| where LogonType == "LDAP cleartext" //and isnotempty(AccountName)*  
 *| project LogonTime = Timestamp, DeviceName, Application, ActionType, LogonType //,AccountName*  
 *| join kind=inner ( DeviceNetworkEvents*  
 *| where Timestamp > ago(7d) | where ActionType == "ConnectionSuccess"*  
