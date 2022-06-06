@@ -95,6 +95,34 @@ Detail in the alert (failed logon attempt):
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image12.png)  
 
-## 6 - 
+## 6 - Active Directory attributes reconnaissance (LDAP)  
+Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
+
+From adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters :  
+
+*(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=2097152)) FindAll()* => Enumerate accounts with Kerberos DES enabled
+
+*(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=4194304)) FindAll()* => Enumerate accounts with Kerberos Pre-Authentication disabled  
+
+*(&(objectCategory=computer)(!(primaryGroupID=516)(userAccountControl:1.2.840.113556.1.4.803:=524288))) FindAll()* => Enumerate all servers configured for Unconstrained Delegation (Excluding DCs)  
+
+*(&(objectCategory=person)(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2))) FindAll()* => Enumerate all enabled accounts
+
+or run from a command line with admin rigths:  
+
+*repadmin /showattr * DC=msdemo,DC=local ou repadmin /showattr * DC=msdemo,DC=local /subtree /filter:"((&(objectClass=computer)(msDS-AllowedToActOnBehalfOfOtherIdentity=*)))" /attrs:cn,msDs-AllowedToActOnBehalfOfOtherIdentity* => Enumerate servers configured for Resource Based Constrained Delegation
+
+You should see the activities and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image18.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
+
+
+# 7 - Account enumeration Reconnaissance  
+
+
 
 
