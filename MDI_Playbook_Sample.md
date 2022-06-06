@@ -38,7 +38,6 @@ From a command line run :
 
 Tools availbale from : http://www.joeware.net/freetools/tools/netsess/  
 
-
 You should see activity and the alert in the client machine timeline :  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png)  
@@ -47,4 +46,41 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image5.png)  
 
+## 3 - User and group membership reconnaissance (SAMR)  
+In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
 
+From a command line with proper permissions, run:  
+   
+*net user /domain*  
+*net group /domain*  
+*net group "Domain Admins" /domain*  
+*net group "Enterprise Admins" /domain*  
+*net group "Schema Admins" /domain!*  
+
+You should see activity and the alert in the user timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png) 
+
+
+## 4 - Security principal reconnaissance (LDAP)  
+In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
+
+From a command line with proper permissions, run the tools from the French Security Agency (https://www.linkedin.com/company/anssi-fr/) for data collection:   
+  
+*Oradad.exe*  
+
+Tools available from : https://github.com/ANSSI-FR/ORADAD/releases 
+  
+You should see the activities and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image9.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
+
+## 5 - 
