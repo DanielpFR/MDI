@@ -161,7 +161,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image16.png)  
 
-# 9 - Suspected Brute-Force Attack (Kerberos, NTLM) & Password Spray attack
+# 9 - Suspected Brute-Force Attack (Kerberos, NTLM and LDAP) & Password Spray attack
 In this detection, an alert is triggered when many authentication failures occur using Kerberos, NTLM, or use of a password spray is detected. Using Kerberos or NTLM, this type of attack is typically committed either horizontal, using a small set of passwords across many users, vertical with a large set of passwords on a few users, or any combination of the two.
 
 From a command line run :
