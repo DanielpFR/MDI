@@ -121,6 +121,26 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
 
 # 7 - Account enumeration Reconnaissance  
+In this alert, Attacker makes Kerberos requests using a list of names to try to find a valid username in the domain; If a guess successfully determines a username, the attacker gets the WrongPassword (0xc000006a) instead of NoSuchUser (0xc0000064) NTLM error.
+
+Build a users.txt list of namesby merging some names from https://github.com/jeanphorn/wordlist/blob/master/usernames.txt and add some valid name from your organisation.
+
+Then, run the following command from a PowerShell session:  
+
+Import-Module .\adlogin.ps1
+adlogin users.txt msdemo.local P@ssw0rd!
+
+Tools available from : https://github.com/jeanphorn/wordlist & https://github.com/InfosecMatter/Minimalistic-offensive-security-tools
+
+You should see the activities and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image19.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image22.png)  
+
+# 8 - Suspected AS-REP Roasting attack
 
 
 
