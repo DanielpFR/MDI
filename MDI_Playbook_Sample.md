@@ -65,7 +65,6 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png) 
 
-
 ## 4 - Security principal reconnaissance (LDAP)  
 In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
 
@@ -83,4 +82,19 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
 
-## 5 - 
+## 5 - Honey Token activity  
+This lure account should be attractive for attackers (attractive name or sensitive group memebership..) and be left unused by your organisation; any activity from them might indicate malicious behavior (LDAP, NTLM or Kerberos logon attempts).
+
+From MSTSC.exe or from an interactive logon, try to logon using this account with a wrong password and/or valid password :  
+
+You should see the logon activity and the alert in the Honey Token user timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image11.png)  
+
+Detail in the alert (failed logon attempt):  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image12.png)  
+
+## 6 - 
+
+
