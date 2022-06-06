@@ -8,6 +8,8 @@ Author: Daniel Pasquier
 As you know, MDI is a powerful solution to detect abnormal or suspicious activities from managed or unmanaged or even unknown machines targeting Domain Controllers. 
 When running a playbook or a pentesting ensure your MDI configuration is well configured and ready, especially with the machine learning period; please see linked-In article: https://www.linkedin.com/post/edit/6938115126705184768/.
 
+Keep in mind that tools used below are just sample ones and do not use hacking third party tools with production accounts.
+
 Then from a new machine (fresh install, managed or unmanaged) try the following scenarios:
 
 ## 1 – Network mapping reconnaissance (DNS)  
@@ -123,7 +125,7 @@ Detail in the alert:
 # 7 - Account enumeration Reconnaissance  
 In this alert, Attacker makes Kerberos requests using a list of names to try to find a valid username in the domain; If a guess successfully determines a username, the attacker gets the WrongPassword (0xc000006a) instead of NoSuchUser (0xc0000064) NTLM error.
 
-Build a users.txt list of namesby merging some names from https://github.com/jeanphorn/wordlist/blob/master/usernames.txt and add some valid name from your organisation.
+Build a users.txt list of names by merging some names from https://github.com/jeanphorn/wordlist/blob/master/usernames.txt and add some valid name from your organisation.
 
 Then, run the following command from a PowerShell session:  
 
@@ -141,7 +143,22 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14a.png)  
 
 # 8 - Suspected AS-REP Roasting attack
+In this detection, MDI looks if an Attacker use tools to detect accounts with their Kerberos preauthentication disabled and he sends AS-REQ requests without the encrypted timestamp. In response the attacker receives AS-REP messages with TGT data, which may be encrypted with an insecure algorithm such as RC4, and save them for later use in an offline password cracking attack (similar to Kerberoasting) and expose plaintext credentials.
 
+From a comand line run:  
 
+*Rubeus.exe kerberoast*  
+*Rubeus.exe kerberoast /tgtdeleg*  
+*Rubeus.exe asktgs /service:http/msdemo-CM01.msdemo.local /ptt*  
 
+Tools available from : https://github.com/GhostPack/Rubeus or https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/tree/master/dotnet%20v4.5%20compiled%20binaries
 
+You should see the activities and the alert in the user timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image15.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image16.png)  
+
+# 9 - 
