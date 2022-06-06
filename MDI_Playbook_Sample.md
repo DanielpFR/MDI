@@ -120,7 +120,6 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
 
-
 # 7 - Account enumeration Reconnaissance  
 
 
