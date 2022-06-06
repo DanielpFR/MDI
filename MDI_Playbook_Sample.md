@@ -23,11 +23,11 @@ From a command line run :
 
 You should see activity in success or failure (connection refused) and the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image2.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image1.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image1.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image2.png)  
 
 ## 2 - User and IP address reconnaissance  
 In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
@@ -40,11 +40,11 @@ Tools availbale from : http://www.joeware.net/freetools/tools/netsess/
 
 You should see activity and the alert in the client machine timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image3.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image5.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image4.png)  
 
 ## 3 - User and group membership reconnaissance (SAMR)  
 In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
@@ -59,11 +59,11 @@ From a command line with proper permissions, run:
 
 You should see activity and the alert in the user timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image5.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png) 
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png) 
 
 ## 4 - Security principal reconnaissance (LDAP)  
 In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
@@ -76,11 +76,11 @@ Tools available from : https://github.com/ANSSI-FR/ORADAD/releases
   
 You should see the activities and the alert in the client machine timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image9.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png)  
 
 ## 5 - Honey Token activity  
 This lure account should be attractive for attackers (attractive name or sensitive group memebership..) and be left unused by your organisation; any activity from them might indicate malicious behavior (LDAP, NTLM or Kerberos logon attempts).
@@ -89,11 +89,11 @@ From MSTSC.exe or from an interactive logon, try to logon using this account wit
 
 You should see the logon activity and the alert in the Honey Token user timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image11.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image9.png)  
 
 Detail in the alert (failed logon attempt):  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image12.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
 
 ## 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
@@ -114,11 +114,11 @@ or run from a command line with admin rigths:
 
 You should see the activities and the alert in the client machine timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image18.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image11.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image12.png)  
 
 # 7 - Account enumeration Reconnaissance  
 In this alert, Attacker makes Kerberos requests using a list of names to try to find a valid username in the domain; If a guess successfully determines a username, the attacker gets the WrongPassword (0xc000006a) instead of NoSuchUser (0xc0000064) NTLM error.
@@ -134,11 +134,11 @@ Tools available from : https://github.com/jeanphorn/wordlist & https://github.co
 
 You should see the activities and the alert in the client machine timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image19.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image13.png)  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image22.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
 
 # 8 - Suspected AS-REP Roasting attack
 
