@@ -76,7 +76,7 @@ Tools available from : https://github.com/ANSSI-FR/ORADAD/releases
   
 You should see the activities and the alert in the client machine timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7a.png)  
 
 Detail in the alert:  
 
@@ -138,7 +138,7 @@ You should see the activities and the alert in the client machine timeline :
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14a.png)  
 
 # 8 - Suspected AS-REP Roasting attack
 
