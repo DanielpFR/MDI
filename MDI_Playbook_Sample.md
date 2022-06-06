@@ -16,6 +16,7 @@ This reconnaissance is used by attackers to map your network structure and targe
 There are several query types in the DNS protocol. This Defender for Identity security alert detects suspicious requests, either requests using an AXFR (transfer) originating from non-DNS servers, or those using an excessive number of requests.
 
 From a command line run :  
+  
 *Nslookup*  
 *server MSDemoDC01.msdemo.local*  
 *ls -d msdemo.local*   
@@ -28,5 +29,22 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image1.png)  
 
+## 2 - User and IP address reconnaissance  
+In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
+
+From a command line run :    
+
+*NetSess.exe MSDemo-DC01.msdemo.local*  
+
+Tools availbale from : http://www.joeware.net/freetools/tools/netsess/  
+
+
+You should see activity and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image5.png)  
 
 
