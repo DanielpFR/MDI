@@ -211,6 +211,8 @@ On the machine 2 (VICTIM-PC), from a command line run as local admin :
 *Klist* => check if the TGT for nuck is loaded  
 Perfrom an ldap bind (digest) using for example LDP.exe => the stolen TGT from machine 1 will be presented to a DC to issue a TGS for the ldap query
 
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+  
 Detail in the alert:  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image21.png)  
