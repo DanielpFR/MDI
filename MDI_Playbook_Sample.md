@@ -216,6 +216,31 @@ Tools available from : https://github.com/gentilkiwi/mimikatz/releases
 Detail in the alert:  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image21.png)  
+ 
+## 11 - Malicious request of Data Protection API (DPAPI) master key
+DPAPI is used by Windows to securely protect passwords saved by browsers, encrypted files, Certificate’s private key, and other sensitive data. DCs hold a backup master key (RSA 2048) that can be used to decrypt all secrets encrypted with DPAPI on domain-joined Windows machines.  
+This is needed when a user password is reset, the blob with sensitive data cannot be decrypted with the new password so a DC must retrieve the data using the master key.  
+Attackers can use the master key to decrypt any secrets protected by DPAPI on all domain-joined machines. In this detection, a MDI alert is triggered when the DPAPI is used to retrieve the backup master key.  
+
+From a command line run :  
+  
+*mimikatz.exe privilege::debug*  
+*mimikatz # lsadump::backupkeys /system:msdemo-DC01 /export*  
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+You should see the activities and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image22.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image23.png)  
+
+## 12 - 
+
+
+
 
 
 
