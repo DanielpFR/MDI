@@ -256,7 +256,7 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image24.png)  
 
 ## 13 - Suspected Neltogon privilege elevation attempt (CVE-2020-1472 exploitation)  
-The alert is triggered if an attacker attempts to establishe a vulnerable Netlogon secure channel connection to a DC, using the Netlogon Remote Protocol (MS-NRPC), also known as Netlogon Elevation of Privilege Vulnerability.
+The alert is triggered if an attacker attempts to establish a vulnerable Netlogon secure channel connection to a DC, using the Netlogon Remote Protocol (MS-NRPC), also known as Netlogon Elevation of Privilege Vulnerability.
 
 From a command line run:  
 
