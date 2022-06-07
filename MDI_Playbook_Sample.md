@@ -242,7 +242,7 @@ Skeleton Key is malware that runs on domain controllers and allows authenticatio
 It means the attacker can use the same password for any AD accounts without the need to reset or change the orginal accounts's password.  
 In this alert, the learned behavior of previous KRB_ERR message encryption from domain controller to the account requesting a ticket, was downgraded.
 
-Be careful, never run an untrusted tools on prodcution DC!
+## Be careful, never run an untrusted tools on a prodcution DC! Once the DC is impacted, there is no easy rollback, the DC has to be depromoted!  
 
 From a command line with a shell on DC, run as AD admin :
 
