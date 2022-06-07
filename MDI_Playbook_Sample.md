@@ -308,7 +308,7 @@ Two alerts are available but let's focus only on the "Domain controller replicat
 From a command line run with AD admin permissions :  
 
 *mimikatz # privilege::debug*  
-*mimikatz # lsadump::dcshadow /object:krbtgt /attribute=ntPwdHistory /value:0000000000*  => coul be useful to set an sensitive SID here
+*mimikatz # lsadump::dcshadow /object:krbtgt /attribute=ntPwdHistory /value:0000000000*  
 *mimikatz # lsadump::dcshadow /push*  
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
@@ -317,9 +317,18 @@ Detail in the alert :
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image29.png)  
 
-## 17 - 
+## 17 - Remote code execution attempts  
+MDI detects PSexec, Remote WMI, and PowerShell connections from a client machine to a DC. Attackers can execute remote commands on your DC or AD FS server to create persistence, collect cata or perform a denial of service (DOS).
 
+From a command line run with AD admin permissions :  
 
+*PSExec.exe -s -i \\msdemo-dc01 powershell.exe*  => to start a PowerShell session on DC
+
+Detail in the alert :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image30.png) 
+
+## 18 - 
 
 
 
