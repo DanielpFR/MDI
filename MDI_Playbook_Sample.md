@@ -393,7 +393,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34a.png)  
 
-## 21 - 
+
 
 
 
