@@ -237,7 +237,29 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image23.png)  
 
-## 12 - 
+## 12 - Suspected skeleton key attack (encryption downgrade)
+Skeleton Key is malware that runs on domain controllers and allows authentication to the domain with any account without knowing its password. This malware often uses weaker encryption algorithms to hash the user's passwords on the domain controller.  
+It means the attacker can use the same password for any AD accounts without the need to reset or change the orginal accounts's password.  
+In this alert, the learned behavior of previous KRB_ERR message encryption from domain controller to the account requesting a ticket, was downgraded.
+
+Be careful, never run an untrusted tools on prodcution DC!
+
+From a command line with a shell on DC, run as AD admin :
+
+*mimikatz # misc::skeleton*  => "mimikatz" should be the master password  
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image24.png)  
+
+## 13 - 
+
+
+
+
 
 
 
