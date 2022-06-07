@@ -164,11 +164,11 @@ Detail in the alert:
 # 9 - Suspected Brute-Force Attack (Kerberos, NTLM and LDAP) & Password Spray attack
 In this detection, an alert is triggered when many authentication failures occur using Kerberos, NTLM, or use of a password spray is detected. Using Kerberos or NTLM, this type of attack is typically committed either horizontal, using a small set of passwords across many users, vertical with a large set of passwords on a few users, or any combination of the two.
 
-From a command line on a workstation run :
+From a command line on a workstation, run :
 
 *net user /domain >users.txt* => to retrieve the list of users in your domain and the result needs to be in one columm
 
-From a PowerShell command line :  
+From a PowerShell command line on a workstation, run:  
 
 *Import-Module .\adlogin.ps1*  
 *adlogin users.txt msdemo.local P@ssw0rd* => for a password spray attack by using one carefully crafted password against all of the known user accounts (one password to many accounts)
