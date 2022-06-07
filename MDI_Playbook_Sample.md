@@ -229,7 +229,7 @@ From a command line run :
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
 
-You should see the activities and the alert in the client machine timeline :  
+You should see the activities and the alert in the user timeline :  
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image22.png)  
 
