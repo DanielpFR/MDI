@@ -129,8 +129,8 @@ Build a users.txt list of names by merging some names from https://github.com/je
 
 Then, run the following command from a PowerShell session on a workstation :  
 
-Import-Module .\adlogin.ps1
-adlogin users.txt msdemo.local P@ssw0rd!
+*Import-Module .\adlogin.ps1*  
+*adlogin users.txt msdemo.local P@ssw0rd!*
 
 Tools available from : https://github.com/jeanphorn/wordlist & https://github.com/InfosecMatter/Minimalistic-offensive-security-tools
 
