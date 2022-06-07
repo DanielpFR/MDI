@@ -367,7 +367,7 @@ You should see the activities and the alert in the user timeline :
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34.png)  
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image34a.png)  
 
 ## 21 - 
 
