@@ -12,7 +12,7 @@ Keep in mind that tools used below are just sample ones and do not use hacking t
 
 Then from a new machine (fresh install, managed or unmanaged) try the following scenarios:
 
-## 1 – Network mapping reconnaissance (DNS)  
+# 1 – Network mapping reconnaissance (DNS)  
 This reconnaissance is used by attackers to map your network structure and target interesting computers for later steps in their attack.
 
 There are several query types in the DNS protocol. This Defender for Identity security alert detects suspicious requests, either requests using an AXFR (transfer) originating from non-DNS servers, or those using an excessive number of requests.
@@ -31,7 +31,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image2.png)  
 
-## 2 - User and IP address reconnaissance  
+# 2 - User and IP address reconnaissance  
 In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
 
 From a command line on a workstation run :    
@@ -48,7 +48,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image4.png)  
 
-## 3 - User and group membership reconnaissance (SAMR)  
+# 3 - User and group membership reconnaissance (SAMR)  
 In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
 
 From a command line on a workstation with proper permissions, run:  
@@ -67,7 +67,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png) 
 
-## 4 - Security principal reconnaissance (LDAP)  
+# 4 - Security principal reconnaissance (LDAP)  
 In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
 
 From a command line on a workstation with proper permissions, run the tools from the French Security Agency (https://www.linkedin.com/company/anssi-fr/) for data collection:   
@@ -84,7 +84,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png)  
 
-## 5 - Honey Token activity  
+# 5 - Honey Token activity  
 This lure account should be attractive for attackers (attractive name or sensitive group memebership..) and be left unused by your organisation; any activity from them might indicate malicious behavior (LDAP, NTLM or Kerberos logon attempts).
 
 From MSTSC.exe or from an interactive logon, try to logon using this account with a wrong password and/or valid password :  
@@ -97,7 +97,7 @@ Detail in the alert (failed logon attempt):
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
 
-## 6 - Active Directory attributes reconnaissance (LDAP)  
+# 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
 
 On a workstation, from adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters :  
@@ -191,7 +191,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image20.png)  
 
-## 10 - Suspected identity theft (pass-the-ticket) & (pass-the-hash)
+# 10 - Suspected identity theft (pass-the-ticket) & (pass-the-hash)
 Pass-the-Ticket or Pass-The-Hash is a lateral movement technique in which attackers steal a Kerberos ticket or user's NTLM hash from one computer and use it to gain access to another computer by reusing the stolen ticket or user's NTLM hash.  
 This detection is often miss-understanding; if you perform a Pass-The-Ticket from one security context to another security context on the same machine, you will not generate an MDI alert, this activity can only be seen with an EDR on a managed machine.  
 What MDI can detect, without any client agent and even if the activity is seen from an unmanaged machine (without EPP or EDR), is one Kerberos ticket (TGT) was issued to a user on a specific machine (Name, IP) and the same ticket is seen coming from another machine (Name, IP), so MDI can trigger a Suspected identity theft… 
@@ -217,7 +217,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image21.png)  
  
-## 11 - Malicious request of Data Protection API (DPAPI) master key
+# 11 - Malicious request of Data Protection API (DPAPI) master key
 DPAPI is used by Windows to securely protect passwords saved by browsers, encrypted files, Certificate’s private key, and other sensitive data. DCs hold a backup master key (RSA 2048) that can be used to decrypt all secrets encrypted with DPAPI on domain-joined Windows machines.  
 This is needed when a user password is reset, the blob with sensitive data cannot be decrypted with the new password so a DC must retrieve the data using the master key.  
 Attackers can use the master key to decrypt any secrets protected by DPAPI on all domain-joined machines. In this detection, a MDI alert is triggered when the DPAPI is used to retrieve the backup master key.  
@@ -237,7 +237,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image23.png)  
 
-## 12 - Suspected skeleton key attack (encryption downgrade)
+# 12 - Suspected skeleton key attack (encryption downgrade)
 Skeleton Key is malware that runs on domain controllers and allows authentication to the domain with any account without knowing its password. This malware often uses weaker encryption algorithms to hash the user's passwords on the domain controller.  
 It means the attacker can use the same password for any AD accounts without the need to reset or change the orginal accounts's password.  
 In this alert, the learned behavior of previous KRB_ERR message encryption from domain controller to the account requesting a ticket, was downgraded.
@@ -255,7 +255,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image24.png)  
 
-## 13 - Suspected Neltogon privilege elevation attempt (CVE-2020-1472 exploitation)  
+# 13 - Suspected Neltogon privilege elevation attempt (CVE-2020-1472 exploitation)  
 The alert is triggered if an attacker attempts to establish a vulnerable Netlogon secure channel connection to a DC, using the Netlogon Remote Protocol (MS-NRPC), also known as Netlogon Elevation of Privilege Vulnerability.
 
 From a command line on a workstation run with a local admin account: 
@@ -269,7 +269,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image25.png)  
 
-## 14 - Suspicious network connection over Encrypting File System Remote Protocol
+# 14 - Suspicious network connection over Encrypting File System Remote Protocol
 This detection is triggered when an attacker tries to take over an AD Domain by exploiting a flaw in the Encrypting File System Remote (EFSRPC) Protocol.
 
 From a command line on a workstation run with a local admin account:  
@@ -283,7 +283,7 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image26.png)
 
-## 15 - Suspected DCSync attack (replication of directory services)
+# 15 - Suspected DCSync attack (replication of directory services)
 If an attacker has the "DS-Replication-Get-Changes-All" permission for example, he can initiate a replication request to retrieve the data stored in Active Directory such as the krbtgt's password hash.  
 In this detection, an alert is triggered when a replication request is initiated from a computer that isn't a DC.  
 
@@ -302,7 +302,7 @@ In the alert Compay Segundo failed to retrieve the DCsync (not enough permission
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image28.png)  
 
-## 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
+# 16 - Suspected DCShadow attack (domain controller promotion) & (domain controller replication request)
 Two alerts are available but let's focus only on the "Domain controller replication request" alert; in this scenario, attackers strive to initiate a malicious replication request, allowing them to change Active Directory objects on a genuine DC, which can give the attackers persistence in the domain.
 
 From a command line on a workstation run with AD admin account :  
@@ -317,7 +317,7 @@ Detail in the alert :
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image29.png)  
 
-## 17 - Remote code execution attempts  
+# 17 - Remote code execution attempts  
 MDI detects PSexec, Remote WMI, and PowerShell connections from a client machine to a DC. Attackers can execute remote commands on your DC or AD FS server to create persistence, collect cata or perform a denial of service (DOS).
 
 From a command line on a workstation run with AD admin account :  
@@ -330,7 +330,7 @@ Detail in the alert :
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image30.png) 
 
-## 18 - Data exfiltration over SMB
+# 18 - Data exfiltration over SMB
 This alert is triggered when suspicious transfers of data are observed from your monitored DCs, such as when an attacker copies the ntds.dit file from a DC to a workstation.
 
 From a command line on a workstation run with AD admin account :  
@@ -348,7 +348,7 @@ Keep in mind that MDI can also track files uploaded from workstation or server t
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image32.png)  
 
-## 19 - Suspected Golden Ticket usage (encryption downgrade) & (nonexistent account) & (Time anomaly) etc..
+# 19 - Suspected Golden Ticket usage (encryption downgrade) & (nonexistent account) & (Time anomaly) etc..
 MDI can detect 6 types of Golden Ticket attack; let see 2 of them.  
 Using the krbtgt's password hash from the DCsync; attackers can now create a Kerberos ticket granting ticket (TGT) that provides authorization to any resource and set the ticket expiration to any arbitrary time. This fake TGT is called a "Golden Ticket" and allows attackers to achieve network persistence.  
 
@@ -376,7 +376,7 @@ Detail in the alert :
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image35.png)  
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image36.png)  
 
-## 20 - Suspicious additions to sensitive groups
+# 20 - Suspicious additions to sensitive groups
 Attackers could add users to highly privileged groups to gain access to more resources, and gain persistency. This alert needs a machine learning period (such as : this user usually does not perform this addition to sensitive groups...etc).
 
 From a workstation with RSAT start with an AD admin account:  
