@@ -6,7 +6,7 @@ Author: Daniel Pasquier
 ## Introduction
 
 As you know, MDI is a powerful solution to detect abnormal or suspicious activities from managed or unmanaged or even unknown machines targeting Domain Controllers. 
-When running a playbook or a pentesting ensure your MDI configuration is well configured and ready, especially with the machine learning period; please see linked-In article: https://www.linkedin.com/post/edit/6938115126705184768/.
+When running a playbook or a pentesting ensure your MDI configuration is well configured and ready, especially with the machine learning period; please see linked-In article: https://www.linkedin.com/pulse/how-fully-evaluate-microsoft-defender-identity-mdi-pasquier-ceh/.
 
 Keep in mind that tools used below are just sample ones and do not use hacking third party tools with production accounts.
 
