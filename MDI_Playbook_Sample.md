@@ -1,4 +1,4 @@
-# Microsoft Defender for Identity (MDI) when running a playbook or a pentesting
+# Playbook sample for Microsoft Defender for Identity (MDI)
 
 ---
 Author: Daniel Pasquier
