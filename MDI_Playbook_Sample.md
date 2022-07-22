@@ -57,7 +57,7 @@ From a command line on a workstation with proper permissions, run:
 *net group /domain*  
 *net group "Domain Admins" /domain*  
 *net group "Enterprise Admins" /domain*  
-*net group "Schema Admins" /domain!*  
+*net group "Schema Admins" /domain*  
 
 You should see activity and the alert in the user timeline :  
 
