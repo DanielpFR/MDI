@@ -1,4 +1,4 @@
-# Attacks simulations for Microsoft Defender for Identity (MDI)
+# Attack simulations for Microsoft Defender for Identity (MDI)
 
 ---
 Author: Daniel Pasquier
