@@ -1,4 +1,4 @@
-# Playbook sample for Microsoft Defender for Identity (MDI)
+# Attacks simulations for Microsoft Defender for Identity (MDI)
 
 ---
 Author: Daniel Pasquier
