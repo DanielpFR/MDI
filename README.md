@@ -156,7 +156,8 @@ Do you want to know which new service, task scheduled are created on yours DCs r
 *| extend ParsedFields=parse_json(AdditionalFields)*  
 *| project Timestamp, ActionType, TargetDeviceName, AccountName, AccountDomain, ServiceName=tostring(ParsedFields.ServiceName), ServiceCommand=tostring(ParsedFields.ServiceCommand)*  
 *| where ServiceName != @"Microsoft Monitoring Agent Azure VM Extension Heartbeat Service"*  
-*| where ServiceName != @"MOMAgentInstaller"| where ServiceName !contains @"MpKsl"*  
+*| where ServiceName != @"MOMAgentInstaller"*  
+*| where ServiceName !contains @"MpKsl"*  
 
 ![Image8](https://user-images.githubusercontent.com/95940022/146023422-f8fcefb3-97a4-4e17-ac25-04fc668f3806.png)  
 
