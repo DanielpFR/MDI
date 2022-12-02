@@ -132,6 +132,7 @@ This setting could be expected for service account if you can’t use gMSA; howe
 *| extend PreviousValue = todynamic(AdditionalFields)["FROM Account Password Never Expires"]*  
 *| extend NewValue = todynamic(AdditionalFields)["TO Account Password Never Expires"]*  
 *| where "True"==NewValue*  
+*| where TargetAccountDisplayName !contains "SVC"*  
 *| project Timestamp, ActionType, Application, TargetAccountDisplayName, PreviousValue, NewValue*  
 
 ![Image6](https://user-images.githubusercontent.com/95940022/146022612-c15937ab-b378-452c-9182-1545daf13b4f.png)  
