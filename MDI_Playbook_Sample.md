@@ -143,6 +143,9 @@ Detail in the alert:
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14a.png)  
 
 # 8 - Suspected Kerberos SPN exposure  
+
+For details about this alert, see [Suspected AS-REP Roasting attack (external ID 2412)](compromised-credentials-alerts.md#suspected-as-rep-roasting-attack-external-id-2412).
+
 In this detection, MDI looks for Attackers that enumerate service accounts and their respective SPNs (Service principal names), request a Kerberos service ticket for the services, capture the Ticket Granting Service (TGS) tickets from memory and extract their hashes, and save them for later use in an offline brute force attack.  
 
 From a comand line on a workstation run:  
