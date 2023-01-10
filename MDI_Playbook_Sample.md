@@ -142,8 +142,8 @@ Detail in the alert:
 
 ![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14a.png)  
 
-# 8 - Suspected AS-REP Roasting attack
-In this detection, MDI looks if an Attacker use tools to detect accounts with their Kerberos preauthentication disabled and he sends AS-REQ requests without the encrypted timestamp. In response the attacker receives AS-REP messages with TGT data, which may be encrypted with an insecure algorithm such as RC4, and save them for later use in an offline password cracking attack (similar to Kerberoasting) and expose plaintext credentials.
+# 8 - Suspected Kerberos SPN exposure  
+In this detection, MDI looks for Attackers that enumerate service accounts and their respective SPNs (Service principal names), request a Kerberos service ticket for the services, capture the Ticket Granting Service (TGS) tickets from memory and extract their hashes, and save them for later use in an offline brute force attack.  
 
 From a comand line on a workstation run:  
 
