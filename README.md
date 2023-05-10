@@ -53,7 +53,7 @@ We all know that Kerberos provides several security benefits over NTLM and provi
 *IdentityLogonEvents*  
 *| where ActionType == "LogonSuccess"*  
 *| where Application == "Active Directory"*  
-*| where Protocol in ("Ntlm", "Kerberos")*  
+*| where Protocol in ("NTLM", "Kerberos")*  
 *| summarize count() by Protocol*  
 
 ![Image2](https://user-images.githubusercontent.com/95940022/146010249-f9ad5964-f8c0-4c4d-8b1d-d624e8663de7.png)  
@@ -65,7 +65,7 @@ To track the use of NTLMv1 you can run:
 *IdentityLogonEvents*  
 *| where Timestamp > ago (7d) // shows activies in the last 7 days*  
 *| where Application contains "directory"*  
-*| where Protocol == "Ntlm"*  
+*| where Protocol == "NTLM"*  
 *| extend AddData = todynamic(AdditionalFields)*  
 *| extend NTLMV1 = tostring(AddData.IsNtlmV1)*  
 *| extend Account = tostring((AddData).["ACTOR.ACCOUNT"])*  
