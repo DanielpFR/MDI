@@ -223,8 +223,24 @@ We all know that T0 Admins should be used only on secured/protected access works
 *| where ActionType == "Potential lateral movement path identified"*  
 *| where AccountUpn == @"AdminT0@msdemo.fr"*  
 *| where DeviceName <> T0Machine*  
+  
+## Tips 12 – Identify machines or IPs from where Account Lockout threshold is triggered  
 
-## Tips 12 – Create a detection / notification rule  
+The account lockout policy is a built-in security measure that limits malicious users and hackers from illegitimately accessing your network resources. However, employees often use multiple devices, numerous productivity applications, Windows services, tasks, network mapping and more, which can store a wrong password and set off the account lockout.  
+It could be interesting to identify machines or IPs from where Account Lockout threshold is triggered only based on MDI raw data.  
+Remark: DeviceName and IPAdress can sometime be empty (no raw data).
+
+*IdentityLogonEvents*   
+*| where Application == @"Active Directory" // AD only*  
+*| where AccountDomain == @"msdemo.org" // if needed to filter by domain*  
+*| where ActionType == @"LogonFailed"*  
+*| where FailureReason == @"WrongPassword" or FailureReason == @"AccountLocked" //badpasswordcount attribute*  
+*| summarize FailureReason = count() by DeviceName, IPAddress, AccountUpn*  
+*| where FailureReason > 15 //depending on the Account Lockout threshold*  
+  
+<img width="671" alt="test" src="https://github.com/DanielpFR/MDI/assets/95940022/0d2815eb-8b87-4926-bda6-8308d198fcdd">  
+
+## Tips 13 – Create a detection / notification rule  
 
 Depending on the columns result you can set a detection rule to run at regular intervals, generating alerts and taking response actions whenever there are matches; this could be useful to notify your SOC team.  
 
