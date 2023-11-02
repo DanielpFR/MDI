@@ -115,27 +115,42 @@ Detail in the alert (failed logon attempt):
 # 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
 
-On a workstation, from adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters :  
+On a workstation, with adsisearcher (PowerShell) or any ldap browser such as ldp.exe set the following ldap filters,
 
-*(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=2097152)) FindAll()* => Enumerate accounts with Kerberos DES enabled
+Enumerate accounts with Kerberos DES enabled :  
+~~~ 
+(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=2097152)) FindAll()  
+~~~
+Enumerate accounts with Kerberos Pre-Authentication disabled :  
+~~~ 
+(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=4194304)) FindAll()  
+~~~
+Enumerate all servers configured for Unconstrained kerberos Delegation (Excluding DCs) :  
+~~~ 
+(&(objectCategory=computer)(!(primaryGroupID=516)(userAccountControl:1.2.840.113556.1.4.803:=524288))) FindAll()  
+~~~
+Enumerate all service accounts configured with Unconstrained kerberos Delegation :  
+~~~ 
+(&(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=524288)) FindAll()
+~~~ 
+Enumerate all enabled accounts :  
+~~~ 
+(&(objectCategory=person)(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2))) FindAll()  
+~~~
+Enumerate all users with password stored in reversible encryption :  
+~~~ 
+(&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128))  
+~~~ 
+  
+  
+Detail in the alert :  
 
-*(&(objectCategory=person)(objectClass=user)(userAccountControl:1.2.840.113556.1.4.803:=4194304)) FindAll()* => Enumerate accounts with Kerberos Pre-Authentication disabled  
+<img width="1200" alt="6LDAP2" src="https://github.com/DanielpFR/MDI/assets/95940022/750ab5e9-4653-4c33-83fd-29658b3574c7">  
 
-*(&(objectCategory=computer)(!(primaryGroupID=516)(userAccountControl:1.2.840.113556.1.4.803:=524288))) FindAll()* => Enumerate all servers configured for Unconstrained Delegation (Excluding DCs)  
-
-*(&(objectCategory=person)(objectClass=user)(!(userAccountControl:1.2.840.113556.1.4.803:=2))) FindAll()* => Enumerate all enabled accounts
-
-or run from a command line with admin rigths:  
-
-*repadmin /showattr * DC=msdemo,DC=local ou repadmin /showattr * DC=msdemo,DC=local /subtree /filter:"((&(objectClass=computer)(msDS-AllowedToActOnBehalfOfOtherIdentity=*)))" /attrs:cn,msDs-AllowedToActOnBehalfOfOtherIdentity* => Enumerate servers configured for Resource Based Constrained Delegation
-
-You should see the activities and the alert in the client machine timeline :  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image11.png)  
-
-Detail in the alert:  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image12.png)  
+with with all settings in the ldap search filter for each request :  
+  
+<img width="500" alt="6LDAP3" src="https://github.com/DanielpFR/MDI/assets/95940022/f59017a5-aabd-4852-8bf7-c2ef42dc3a60">
+  
 
 # 7 - Account enumeration Reconnaissance  
 In this alert, Attacker makes Kerberos requests using a list of names to try to find a valid username in the domain; If a guess successfully determines a username, the attacker gets the WrongPassword (0xc000006a) instead of NoSuchUser (0xc0000064) NTLM error.
