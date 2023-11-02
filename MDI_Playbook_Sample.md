@@ -23,14 +23,15 @@ From a command line on a workstation run :
 *server MSDemoDC01.msdemo.local*  
 *ls -d msdemo.local*   
 
-You should see activity in success or failure (connection refused) and the alert:  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image1.png)  
-
 Detail in the alert:  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image2.png)  
-
+    
+<img width="1200" alt="DNS1" src="https://github.com/DanielpFR/MDI/assets/95940022/8d8d9994-da0b-4adc-8c0b-ff93c27d808a">
+     
+If you want to see DNS activities from this IP (if Microsoft Defender for Endpoint is not present on the source computer):  
+  
+<img width="1200" alt="DNS2" src="https://github.com/DanielpFR/MDI/assets/95940022/2831452e-0f2a-4107-a633-635740207daf">  
+  
+  
 # 2 - User and IP address reconnaissance  
 In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
 
