@@ -20,7 +20,7 @@ There are several query types in the DNS protocol. This Defender for Identity se
 From a command line on a workstation run :  
 ~~~  
 Nslookup  
-server MSDemoDC01.msdemo.local  
+server MSDemoInfra-DC1.msdemo.local  
 ls -d msdemo.local   
 ~~~
   
@@ -39,7 +39,7 @@ In this detection, an alert is triggered when an SMB session enumeration is perf
 
 From a command line on a workstation run :    
 ~~~  
-*NetSess.exe MSDemo-DC01.msdemo.local*  
+NetSess.exe MSDemoInfra-DC1.msdemo.local  
 ~~~  
 Tools availbale from : http://www.joeware.net/freetools/tools/netsess/  
 
