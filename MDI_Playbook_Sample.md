@@ -18,16 +18,18 @@ This reconnaissance is used by attackers to map your network structure and targe
 There are several query types in the DNS protocol. This Defender for Identity security alert detects suspicious requests, either requests using an AXFR (transfer) originating from non-DNS servers, or those using an excessive number of requests.
 
 From a command line on a workstation run :  
+~~~  
+Nslookup  
+server MSDemoDC01.msdemo.local  
+ls -d msdemo.local   
+~~~
   
-*Nslookup*  
-*server MSDemoDC01.msdemo.local*  
-*ls -d msdemo.local*   
-
 Detail in the alert:  
     
-<img width="1200" alt="DNS1" src="https://github.com/DanielpFR/MDI/assets/95940022/8d8d9994-da0b-4adc-8c0b-ff93c27d808a">
-     
-If you want to see DNS activities from this IP (if Microsoft Defender for Endpoint is not present on the source computer):  
+<img width="1200" alt="DNS1c" src="https://github.com/DanielpFR/MDI/assets/95940022/5427643e-57a5-4c8b-b45b-eb55978e90e3">
+
+      
+If you want to see DNS activities from this IP (if Microsoft Defender for Endpoint is not present on the source computer) :  
   
 <img width="1200" alt="DNS2" src="https://github.com/DanielpFR/MDI/assets/95940022/2831452e-0f2a-4107-a633-635740207daf">  
   
