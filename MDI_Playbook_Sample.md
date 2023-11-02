@@ -38,18 +38,21 @@ If you want to see DNS activities from this IP (if Microsoft Defender for Endpoi
 In this detection, an alert is triggered when an SMB session enumeration is performed against a domain controller; users and computers need at least to access the sysvol share in order to retreive GPOs. Attacker can use this information to know where users recently logged on and move laterally in the network to get to a specific sensitive account.  
 
 From a command line on a workstation run :    
-
+~~~  
 *NetSess.exe MSDemo-DC01.msdemo.local*  
-
+~~~  
 Tools availbale from : http://www.joeware.net/freetools/tools/netsess/  
 
-You should see activity and the alert in the client machine timeline :  
+You should see activity and the alert in the user timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image3.png)  
+<img width="1200" alt="Reco2" src="https://github.com/DanielpFR/MDI/assets/95940022/7d8e4d72-661e-4759-891a-9fee374a45ee">
+
 
 Detail in the alert:  
+  
+<img width="1200" alt="Reco1" src="https://github.com/DanielpFR/MDI/assets/95940022/e435ba2f-5a33-4f69-b937-90a3743f15ea">
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image4.png)  
+  
 
 # 3 - User and group membership reconnaissance (SAMR)  
 In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
