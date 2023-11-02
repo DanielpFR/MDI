@@ -26,9 +26,8 @@ ls -d msdemo.local
   
 Detail in the alert:  
     
-<img width="1200" alt="DNS1c" src="https://github.com/DanielpFR/MDI/assets/95940022/5427643e-57a5-4c8b-b45b-eb55978e90e3">
-
-      
+<img width="890" alt="DNS1c" src="https://github.com/DanielpFR/MDI/assets/95940022/b77503b7-7ba0-4a61-9dfd-48e0054b641a">
+        
 If you want to see DNS activities from this IP (if Microsoft Defender for Endpoint is not present on the source computer) :  
   
 <img width="1200" alt="DNS2" src="https://github.com/DanielpFR/MDI/assets/95940022/2831452e-0f2a-4107-a633-635740207daf">  
@@ -58,38 +57,48 @@ Detail in the alert:
 In this detection, User and group membership reconnaissance are used by attackers to map the directory structure and target privileged accounts for later steps in their attack using SAMR protocol.
 
 From a command line on a workstation with proper permissions, run:  
-   
-*net user /domain*  
-*net group /domain*  
-*net group "Domain Admins" /domain*  
-*net group "Enterprise Admins" /domain*  
-*net group "Schema Admins" /domain*  
+
+~~~  
+net user /domain   
+net group /domain  
+net group "Domain Admins" /domain  
+net group "Enterprise Admins" /domain  
+net group "Schema Admins" /domain  
+~~~
 
 You should see activity and the alert in the user timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image5.png)  
+<img width="1200" alt="Samr1" src="https://github.com/DanielpFR/MDI/assets/95940022/49237748-dbec-4b97-aae4-f10b1ec3f227">
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image6.png) 
+<img width="1200" alt="Samr2" src="https://github.com/DanielpFR/MDI/assets/95940022/553d0e18-f12a-4318-b1bb-14b7e2c09be0">
+
 
 # 4 - Security principal reconnaissance (LDAP)  
 In this detection, MDI looks for LDAP security principal reconnaissance which is commonly used as the first phase of a Kerberoasting attack. Kerberoasting attacks are used to get a target list of Security Principal Names (SPNs), which attackers then attempt to get Ticket Granting Server (TGS) tickets for.
 
 From a command line on a workstation with proper permissions, run the tools from the French Security Agency (https://www.linkedin.com/company/anssi-fr/) for data collection:   
-  
-*Oradad.exe*  
 
+~~~  
+Oradad.exe  
+~~~
+  
 Tools available from : https://github.com/ANSSI-FR/ORADAD/releases 
   
-You should see the activities and the alert in the client machine timeline :  
+You should see the activities and the alert in the user timeline :  
+    
+<img width="1200" alt="4LDAP1" src="https://github.com/DanielpFR/MDI/assets/95940022/b9ad4117-bfb1-4ea9-999e-70ab6a166d7a">
+  
+Detail in the alert with all settings in the ldap search filter :  
+  
+<img width="1200" alt="4LDAP2" src="https://github.com/DanielpFR/MDI/assets/95940022/eb3a221f-16ca-4f5b-b14d-46681fd34e1d">
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image7a.png)  
+with the enumeration types :
+  
+<img width="500" alt="4LDAP3" src="https://github.com/DanielpFR/MDI/assets/95940022/4df70911-ae90-4cf0-8269-edd1c8e98496">
 
-Detail in the alert:  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image8.png)  
-
+  
 # 5 - Honey Token activity  
 This lure account should be attractive for attackers (attractive name or sensitive group memebership..) and be left unused by your organisation; any activity from them might indicate malicious behavior (LDAP, NTLM or Kerberos logon attempts).
 
