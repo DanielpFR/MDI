@@ -106,11 +106,12 @@ From MSTSC.exe or from an interactive logon, try to logon using this account wit
 
 You should see the logon activity and the alert in the Honey Token user timeline :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image9.png)  
+<img width="1200" alt="5Honey1" src="https://github.com/DanielpFR/MDI/assets/95940022/07ccfc84-29cd-40a1-8788-7cf8579c2acf">  
+  
+Detail in the alert (failed logon attempt on ldap and NTLM):  
 
-Detail in the alert (failed logon attempt):  
+<img width="1200" alt="5Honey2" src="https://github.com/DanielpFR/MDI/assets/95940022/61115ee1-b7cf-427c-86ae-fc561e558462">  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image10.png)  
 
 # 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
