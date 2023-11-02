@@ -12,7 +12,7 @@ Keep in mind that tools used below are just sample ones and do not use hacking t
 
 Then from a new machine (fresh install, managed or unmanaged) try the following scenarios:
 
-# 1 – Network mapping reconnaissance (DNS)  
+# 1 – Network mapping reconnaissance (DNS)   
 This reconnaissance is used by attackers to map your network structure and target interesting computers for later steps in their attack.
 
 There are several query types in the DNS protocol. This Defender for Identity security alert detects suspicious requests, either requests using an AXFR (transfer) originating from non-DNS servers, or those using an excessive number of requests.
@@ -139,10 +139,9 @@ Enumerate all enabled accounts :
 ~~~
 Enumerate all users with password stored in reversible encryption :  
 ~~~ 
-(&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128))  
+(&(objectClass=user)(objectCategory=user)(userAccountControl:1.2.840.113556.1.4.803:=128)) FindAll()   
 ~~~ 
-  
-  
+    
 Detail in the alert :  
 
 <img width="1200" alt="6LDAP2" src="https://github.com/DanielpFR/MDI/assets/95940022/750ab5e9-4653-4c33-83fd-29658b3574c7">  
