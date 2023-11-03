@@ -109,10 +109,10 @@ You should see the logon activity and the alert in the Honey Token user timeline
 <img width="1200" alt="5Honey1" src="https://github.com/DanielpFR/MDI/assets/95940022/07ccfc84-29cd-40a1-8788-7cf8579c2acf">  
   
 Detail in the alert (failed logon attempt on ldap and NTLM):  
+  
+<img width="889" alt="5Honey2" src="https://github.com/DanielpFR/MDI/assets/95940022/8ddd20b3-8595-4591-87c5-7a6ac017c5c0">
 
-<img width="1200" alt="5Honey2" src="https://github.com/DanielpFR/MDI/assets/95940022/61115ee1-b7cf-427c-86ae-fc561e558462">  
-
-
+  
 # 6 - Active Directory attributes reconnaissance (LDAP)  
 Active Directory LDAP attributes reconnaissance is used by attackers to gain critical information about the domain environment, such as accounts with DES or RC4 kerberos cipher, accounts with Kerberos Pre-Authentication disabled and service account configured woth Uncosntrainted Keberos Delegation.
 
@@ -159,18 +159,21 @@ Build a users.txt list of names by merging some names from https://github.com/je
 
 Then, run the following command from a PowerShell session on a workstation :  
 
-*Import-Module .\adlogin.ps1*  
-*adlogin users.txt msdemo.local P@ssw0rd!*
+~~~
+Import-Module .\adlogin.ps1  
+adlogin users.txt msdemo.local
+~~~
 
 Tools available from : https://github.com/jeanphorn/wordlist & https://github.com/InfosecMatter/Minimalistic-offensive-security-tools
 
-You should see the activities and the alert in the client machine timeline :  
+You also see the activities from this machine with a simple Advanced Hunting query (KQL) :  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image13.png)  
+<img width="1200" alt="8Enu1" src="https://github.com/DanielpFR/MDI/assets/95940022/25df6e3d-dcc3-4829-ae0a-86144520e052">  
 
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image14a.png)  
+<img width="1200" alt="8Enum2" src="https://github.com/DanielpFR/MDI/assets/95940022/af72006c-08e9-4623-8c81-0f073d08fec0">  
+
 
 # 8 - Suspected Kerberos SPN exposure  
 
