@@ -183,20 +183,23 @@ In this detection, MDI looks for Attackers that enumerate service accounts and t
 
 From a comand line on a workstation run:  
 
-*Rubeus.exe kerberoast*  
-*Rubeus.exe kerberoast /tgtdeleg*  
-*Rubeus.exe asktgs /service:http/msdemo-CM01.msdemo.local /ptt*  
+~~~
+Rubeus.exe kerberoast  
+Rubeus.exe kerberoast /tgtdeleg  
+Rubeus.exe asktgs /service:http/msdemo-CM01.msdemo.local /ptt  
+~~~
 
 Tools available from : https://github.com/GhostPack/Rubeus or https://github.com/r3motecontrol/Ghostpack-CompiledBinaries/tree/master/dotnet%20v4.5%20compiled%20binaries
 
-You should see the activities and the alert in the user timeline :  
-
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image15.png)  
-
 Detail in the alert:  
 
-![image1](https://raw.githubusercontent.com/DanielpFR/MDI/Images/Image16.png)  
+<img width="1200" alt="9Kerberosating2" src="https://github.com/DanielpFR/MDI/assets/95940022/77c4641a-072e-4d8b-b2b5-cc8ffcaa1c85">  
 
+and the detail of the ldap search filter:  
+
+<img width="500" alt="9Kerberosating3" src="https://github.com/DanielpFR/MDI/assets/95940022/df64a087-01fe-4540-8d2b-8fa4328d6cbb">  
+
+  
 # 9 - Suspected Brute-Force Attack (Kerberos, NTLM and LDAP) & Password Spray attack
 In this detection, an alert is triggered when many authentication failures occur using Kerberos, NTLM, or use of a password spray is detected. Using Kerberos or NTLM, this type of attack is typically committed either horizontal, using a small set of passwords across many users, vertical with a large set of passwords on a few users, or any combination of the two.
 
