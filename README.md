@@ -53,7 +53,7 @@ We all know that Kerberos provides several security benefits over NTLM and provi
 *IdentityLogonEvents*  
 *| where ActionType == "LogonSuccess"*  
 *| where Application == "Active Directory"*  
-*| where Protocol in ("NTLM", "Kerberos")*  
+*| where Protocol in ("Ntlm", "Kerberos")*  
 *| summarize count() by Protocol*  
 
 ![Image2](https://user-images.githubusercontent.com/95940022/146010249-f9ad5964-f8c0-4c4d-8b1d-d624e8663de7.png)  
