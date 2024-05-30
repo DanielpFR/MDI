@@ -280,6 +280,54 @@ Please find below a KQL query to monitor AD groups, from Gershon Levitz in the I
 ![Capture d'écran 2024-05-30 162519](https://github.com/DanielpFR/MDI/assets/95940022/8f28b0c2-b6df-48b2-8a01-96336065593f)
 
 
+Other example :
+
+*let Events = materialize (*  
+*IdentityDirectoryEvents*  
+*| where ActionType == 'Group Membership changed'*  
+*| extend ActivityType = iff(isnotempty(tostring(AdditionalFields['TO.GROUP'])),"Added Account", "Removed Account")*  
+*//| where isnotempty(AccountSid)*  
+*);*  
+*let Tier0Adds = (*  
+*Events*  
+*| where ActivityType == "Added Account"*  
+*| extend TargetGroup = tostring(AdditionalFields['TO.GROUP'])*  
+*| extend TargetObject = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), tostring(AdditionalFields['TARGET_OBJECT.GROUP']), tostring(AdditionalFields['TARGET_OBJECT.USER']))*  
+*| extend TargetType = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), "Security Group", "User Account")*  
+*//| extend TargetObject = AdditionalFields['TARGET_OBJECT.USER']*  
+*);*  
+*let Tier0Removes = (*  
+*Events*  
+*| where ActivityType == "Removed Account"*  
+*| extend TargetGroup = tostring(AdditionalFields['FROM.GROUP'])*  
+*| extend TargetObject = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])),tostring(AdditionalFields['TARGET_OBJECT.GROUP']), tostring(AdditionalFields['TARGET_OBJECT.USER']))*  
+*| extend TargetType = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), "Security Group", "User Account")*  
+*);*  
+*let Tier0Groups = datatable(TargetGroup:string)*  
+*[*  
+    *'Account Operators',*  
+    *'Administrators',*  
+    *'Domain Admins',*  
+    *'Backup Operators',*  
+    *'Domain Controllers',*  
+    *'Enterprise Admins',*  
+    *'Enterprise Read-only Domain Controllers',*  
+    *'Group Policy Creator Owners',*  
+    *'Incoming Forest Trust Builders',*  
+    *'Microsoft Exchange Servers',*  
+    *'Network Configuration Operators',*  
+    *'Print Operators',*  
+    *'Read-only Domain Controllers',*  
+    *'Replicator',*  
+    *'Schema Admins',*  
+    *'Server Operators',*  
+    *'Mark 8 Project Team'*  
+*];*  
+*Tier0Groups*  
+*| join (union Tier0Adds, Tier0Removes) on TargetGroup*  
+*| project Timestamp, ActionType, ActivityType,TargetType, ActorUpn=AccountUpn, TargetObject, TargetAccountUpn, TargetGroup*  
+*// If you are setting up a detection rule in M365D, you'll need to add ReportId and AccountSid to the projected columns*  
+ 
 ## Tips 14 – Create a detection / notification rule  
 
 Depending on the columns result you can set a detection rule to run at regular intervals, generating alerts and taking response actions whenever there are matches; this could be useful to notify your SOC team.  
