@@ -240,7 +240,47 @@ Remark: DeviceName and IPAdress can sometime be empty (no raw data).
   
 <img width="671" alt="test" src="https://github.com/DanielpFR/MDI/assets/95940022/0d2815eb-8b87-4926-bda6-8308d198fcdd">  
 
-## Tips 13 – Create a detection / notification rule  
+## Tips 13 – Monitor AD Groups membership 
+
+We all know that monitoring sensitive groups membership is very important, it could be the built-in ones such as Domain Admins, Enterprise Admins etc.., but it makes sense also to monitor custom AD groups such as Admin servers, Helpdesk or any groups that give access to sensitive data.
+With MDI you can tag manually group as "Sensitive" in addition to those tagged by default and see the "Modifications to sensitive groups" Excel report available from "Identities reports" in the Defender XDR portal; MDI can also generate the "Suspicious additions to sensitive groups (external ID 2024)" alert based on machine learning.  
+Please find below a KQL query to monitor AD groups, from Gershon Levitz in the ITDR product group. Keep in mind that can also be custom detection, meaning you can generate an MDI custom alert if we get a result.  
+
+
+*let SensitiveGroupName = pack_array(  // Declare Sensitive Group names. Add any groups that you manually tagged as sensitive or nested groups in one of the default groups.*  
+    *'Account Operators',*  
+    *'Administrators',*  
+    *'Domain Admins',*  
+    *'Backup Operators',*  
+    *'Domain Controllers',*  
+    *'Enterprise Admins',*  
+    *'Enterprise Read-only Domain Controllers',*  
+    *'Group Policy Creator Owners',*  
+    *'Incoming Forest Trust Builders',*  
+    *'Microsoft Exchange Servers',*  
+    *'Network Configuration Operators',*  
+    *'Print Operators',*  
+    *'Read-only Domain Controllers',*  
+    *'Replicator',*  
+    *'Schema Admins',*  
+    *'Server Operators',*  
+    *'Mark 8 Project Team'*  
+*);*  
+*IdentityDirectoryEvents*  
+*| where Application == "Active Directory"*  
+*| where ActionType == "Group Membership changed"*  
+*| extend ToGroup = tostring(parse_json(AdditionalFields).["TO.GROUP"]) // Extracts the group name if action is add entity to a group.*  
+*| extend FromGroup = tostring(parse_json(AdditionalFields).["FROM.GROUP"]) // Extracts the group name if action is remove entity from a group.*  
+*| extend Action = iff(isempty(ToGroup), "Remove", "Add") // Calculates if the action is Remove or Add.*  
+*| extend GroupName = iff(isempty(ToGroup), FromGroup, ToGroup) // Group name that the action was taken on.*   
+*| where GroupName in~ (SensitiveGroupName)*  
+*| project Timestamp, Action, ToGroup, FromGroup,  Target_Account = TargetAccountDisplayName, Target_UPN = TargetAccountUpn, DC=DestinationDeviceName, Actor=AccountName, ActorDomain=AccountDomain, ReportId, AdditionalFields*  
+*| sort by Timestamp desc*  
+
+![Capture d'écran 2024-05-30 162519](https://github.com/DanielpFR/MDI/assets/95940022/8f28b0c2-b6df-48b2-8a01-96336065593f)
+
+
+## Tips 14 – Create a detection / notification rule  
 
 Depending on the columns result you can set a detection rule to run at regular intervals, generating alerts and taking response actions whenever there are matches; this could be useful to notify your SOC team.  
 
