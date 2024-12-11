@@ -216,13 +216,25 @@ This query is available from  [https://github.com/Iveco/xknow_infosec/blob/main/
 
 ## Tips 11 – Detect T0 Admin login on unsecure machines  
 
-We all know that T0 Admins should be used only on secured/protected access workstations (SAW/PAW) to mitigate credential theft and a GPO can be used to deny logon types on all machines except a whitelist that matches SAW or PAW machines. However, you can query for “Potential lateral movement path identified” and exclude the machines they should only be logging in from assuming when the sensitive account logged on it would create a LMP. So let’s say you have a Tier0 machine that the admins should be logon from you can create a query like this:  
+We all know that T0 Admins should be used only on secured/protected access workstations (SAW/PAW) to mitigate credential theft and a GPO can be used to deny logon types on all machines except a whitelist that matches SAW or PAW machines. Here, We want to be sure that T0 admins use only Privileged Access Workstation (PAW) machine or legitimate Admin jump servers; create this detection rule to identify any deviance.
 
-*let T0Machine = "adminpc.contoso.azure ";*  
-*IdentityDirectoryEvents*  
-*| where ActionType == "Potential lateral movement path identified"*  
-*| where AccountUpn == @"AdminT0@msdemo.fr"*  
-*| where DeviceName <> T0Machine*  
+*let T0Users = ExposureGraphNodes*  
+*| where NodeLabel == "user"*  
+*| extend parsedfields = parse_json(NodeProperties)*  
+*| extend parsedRawData = parse_json(parsedfields.rawData)*  
+*| where parsedRawData.primaryProvider == "ActiveDirectory" or parsedRawData.primaryProvider == "Hybrid"*  
+*| extend nestedAdGroupNames = parse_json(parsedRawData.nestedAdGroupNames)*  
+*| where nestedAdGroupNames contains "T0_Admins" // This is your T0 AD group*  
+*| extend AccountSid = tostring(parsedRawData.adSid);*  
+*let T0Machines = pack_array( // Declare PAW machines, jump admin servers as well as DCs*  
+*'msdemo-dc1.msdemo.local',*  
+*'cli2-win11-domj.msdemo.local'*  
+*);*  
+*IdentityLogonEvents*  
+*| where Application == @"Active Directory"*  
+*| where LogonType == "Interactive" or LogonType == "Remote desktop"*  
+*| where not(DeviceName in~ (T0Machines))*  
+ 
   
 ## Tips 12 – Identify machines or IPs from where Account Lockout threshold is triggered  
 
