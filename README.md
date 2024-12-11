@@ -103,7 +103,7 @@ Using this KQL query you can monitor this activity and identify potential suspec
 *IdentityDirectoryEvents*  
 *| where ActionType == @"SMB file copy"*  
 *| extend ParsedFields=parse_json(AdditionalFields)*  
-*| project Timestamp, ActionType, DeviceName, IPAddress, AccountDisplayName, DestinationDeviceName, DestinationPort, FileName=tostring(ParsedFields.FileName), FilePath=tostring(ParsedFields.FilePath), Method=tostring(ParsedFields.Method)*  
+*| project Timestamp, ReportId, ActionType, DeviceName, IPAddress, AccountDisplayName, DestinationDeviceName, DestinationPort, FileName=tostring(ParsedFields.FileName), FilePath=tostring(ParsedFields.FilePath), Method=tostring(ParsedFields.Method)*  
 *| where Method == @"Write"*  
 
 ![Image4](https://user-images.githubusercontent.com/95940022/146016380-1d6dcb4a-02f7-4b2c-8fe0-70f21e197075.png) 
@@ -144,7 +144,7 @@ MDI generates an alert when remote code execution is performed against a DC, how
 *IdentityDirectoryEvents*  
 *| where ActionType == @"PowerShell execution"*  
 *| extend Command = todynamic(AdditionalFields)["PowerShell execution"]*  
-*| project Timestamp, ActionType, DeviceName, IPAddress, DestinationDeviceName, AccountName, AccountDomain, Command*  
+*| project Timestamp, ReportId, ActionType, DeviceName, IPAddress, DestinationDeviceName, AccountName, AccountDomain, Command*  
 
 ![Image7](https://user-images.githubusercontent.com/95940022/146022984-a1cb5191-e3e7-4b28-88fa-edb0ce37bde0.png)  
 
@@ -155,7 +155,7 @@ Do you want to know which new service, task scheduled are created on yours DCs r
 *IdentityDirectoryEvents*  
 *| where ActionType == @"Service creation"*  
 *| extend ParsedFields=parse_json(AdditionalFields)*  
-*| project Timestamp, ActionType, TargetDeviceName, AccountName, AccountDomain, ServiceName=tostring(ParsedFields.ServiceName), ServiceCommand=tostring(ParsedFields.ServiceCommand)*  
+*| project Timestamp, ReportId, ActionType, TargetDeviceName, AccountName, AccountDomain, ServiceName=tostring(ParsedFields.ServiceName), ServiceCommand=tostring(ParsedFields.ServiceCommand)*  
 *| where ServiceName != @"Microsoft Monitoring Agent Azure VM Extension Heartbeat Service"*  
 *| where ServiceName != @"MOMAgentInstaller"*  
 *| where ServiceName !contains @"MpKsl"*  
@@ -286,60 +286,11 @@ Please find below a KQL query to monitor AD groups, from Gershon Levitz in the I
 *| extend Action = iff(isempty(ToGroup), "Remove", "Add") // Calculates if the action is Remove or Add.*  
 *| extend GroupName = iff(isempty(ToGroup), FromGroup, ToGroup) // Group name that the action was taken on.*   
 *| where GroupName in~ (SensitiveGroupName)*  
-*| project Timestamp, Action, ToGroup, FromGroup,  Target_Account = TargetAccountDisplayName, Target_UPN = TargetAccountUpn, DC=DestinationDeviceName, Actor=AccountName, ActorDomain=AccountDomain, ReportId, AdditionalFields*  
+*| project Timestamp, Action, ToGroup, FromGroup,  Target_Account = TargetAccountDisplayName, Target_UPN = TargetAccountUpn, AccountSid, DC=DestinationDeviceName, Actor=AccountName, ActorDomain=AccountDomain, ReportId, AdditionalFields*  
 *| sort by Timestamp desc*  
 
 ![Capture d'écran 2024-05-30 162519](https://github.com/DanielpFR/MDI/assets/95940022/8f28b0c2-b6df-48b2-8a01-96336065593f)
 
-
-Other example :
-
-*let Events = materialize (*  
-*IdentityDirectoryEvents*  
-*| where ActionType == 'Group Membership changed'*  
-*| extend ActivityType = iff(isnotempty(tostring(AdditionalFields['TO.GROUP'])),"Added Account", "Removed Account")*  
-*//| where isnotempty(AccountSid)*  
-*);*  
-*let Tier0Adds = (*  
-*Events*  
-*| where ActivityType == "Added Account"*  
-*| extend TargetGroup = tostring(AdditionalFields['TO.GROUP'])*  
-*| extend TargetObject = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), tostring(AdditionalFields['TARGET_OBJECT.GROUP']), tostring(AdditionalFields['TARGET_OBJECT.USER']))*  
-*| extend TargetType = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), "Security Group", "User Account")*  
-*//| extend TargetObject = AdditionalFields['TARGET_OBJECT.USER']*  
-*);*  
-*let Tier0Removes = (*  
-*Events*  
-*| where ActivityType == "Removed Account"*  
-*| extend TargetGroup = tostring(AdditionalFields['FROM.GROUP'])*  
-*| extend TargetObject = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])),tostring(AdditionalFields['TARGET_OBJECT.GROUP']), tostring(AdditionalFields['TARGET_OBJECT.USER']))*  
-*| extend TargetType = iff(isempty(tostring(AdditionalFields['TARGET_OBJECT.USER'])), "Security Group", "User Account")*  
-*);*  
-*let Tier0Groups = datatable(TargetGroup:string)*  
-*[*  
-    *'Account Operators',*  
-    *'Administrators',*  
-    *'Domain Admins',*  
-    *'Backup Operators',*  
-    *'Domain Controllers',*  
-    *'Enterprise Admins',*  
-    *'Enterprise Read-only Domain Controllers',*  
-    *'Group Policy Creator Owners',*  
-    *'Incoming Forest Trust Builders',*  
-    *'Microsoft Exchange Servers',*  
-    *'Network Configuration Operators',*  
-    *'Print Operators',*  
-    *'Read-only Domain Controllers',*  
-    *'Replicator',*  
-    *'Schema Admins',*  
-    *'Server Operators',*  
-    *'Mark 8 Project Team'*  
-*];*  
-*Tier0Groups*  
-*| join (union Tier0Adds, Tier0Removes) on TargetGroup*  
-*| project Timestamp, ActionType, ActivityType,TargetType, ActorUpn=AccountUpn, TargetObject, TargetAccountUpn, TargetGroup*  
-*// If you are setting up a detection rule in M365D, you'll need to add ReportId and AccountSid to the projected columns*  
- 
 ## Tips 14 – Create a detection / notification rule  
 
 Depending on the columns result you can set a detection rule to run at regular intervals, generating alerts and taking response actions whenever there are matches; this could be useful to notify your SOC team.  
